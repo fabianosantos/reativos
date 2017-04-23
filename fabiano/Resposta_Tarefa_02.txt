@@ -1,0 +1,43 @@
+// Pin 13 has an LED connected on most Arduino boards.
+// give it a name:
+#define LED_PIN 13
+#define BUT_MINUS 2
+#define BUT_PLUS 4
+
+unsigned long old = millis();
+int speed = 200;
+int state = 0;
+
+// the setup routine runs once when you press reset:
+void setup() {
+  // initialize the digital pin as an output.
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(BUT_MINUS, INPUT);
+  pinMode(BUT_PLUS, INPUT);
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  unsigned long now = millis();
+  if(now >= old+speed) {
+    old = now;
+    state = !state;
+    digitalWrite(LED_PIN, state);
+  }
+  
+  if(!digitalRead(BUT_MINUS)) {
+    while(!digitalRead(BUT_MINUS)) {
+      if(!digitalRead(BUT_PLUS) && millis() <= old+500) {
+        while(1){
+          digitalWrite(LED_PIN, HIGH);
+        }
+      }
+    }
+    speed -= 10;
+  }
+  
+  if(!digitalRead(BUT_PLUS)) {
+    while(!digitalRead(BUT_PLUS));
+    speed += 10;
+  }
+}
