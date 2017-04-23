@@ -1,0 +1,79 @@
+//Acelera botao1, desacelera botao2, para dois botoes
+
+
+#define LED_PIN 13
+
+#define BUT_PIN_MINUS 2
+
+#define BUT_PIN_PLUS 5
+
+
+
+int state = 0;
+
+unsigned long old;
+
+int speed = 1000;
+
+
+
+void setup() {
+
+  // put your setup code here, to run once:
+
+
+  pinMode(LED_PIN, OUTPUT);
+
+  pinMode(BUT_PIN_MINUS, INPUT);
+
+  pinMode(BUT_PIN_PLUS, INPUT);
+
+  old = millis();
+
+  digitalWrite(LED_PIN, state);
+
+}
+
+
+
+void loop() {
+
+  // put your main code here, to run repeatedly:
+
+  unsigned long now = millis();
+
+  if(now >= old+speed) {
+
+    old = now;
+
+    state = !state;
+
+    digitalWrite(LED_PIN, state);
+
+  }
+
+
+
+  int but = digitalRead(BUT_PIN_MINUS);
+
+  if(!but) {
+
+    speed += 500;
+
+    while(!digitalRead(BUT_PIN_MINUS));
+
+  }
+
+
+
+  int but2 = digitalRead(BUT_PIN_PLUS);
+
+  if(!but2) {
+
+    speed -= 500;
+
+    while(!digitalRead(BUT_PIN_PLUS));
+
+  }
+
+}
